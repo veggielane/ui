@@ -1,0 +1,72 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                          xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             
+                      xmlns:behaviors="clr-namespace:ExampleUI;assembly=ExampleUI"
+             xmlns:vm="clr-namespace:ExampleUI.ViewModels"
+             xmlns:AvaloniaEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ExampleUI.Views.MainView"
+             x:DataType="vm:MainViewModel">
+  <Design.DataContext>
+    <vm:MainViewModel />
+  </Design.DataContext>
+
+  <SplitView IsPaneOpen="True"
+           DisplayMode="Inline"
+           OpenPaneLength="300">
+    <SplitView.Pane>
+      <ListBox ItemsSource="{Binding Nodes}" SelectedItem="{Binding SelectedNode}" Margin="0 50 0 0">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <Border>
+              <TextBlock Text="{Binding Title}"/>
+            </Border>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+
+    </SplitView.Pane>
+
+    <Grid>
+      <Grid RowDefinitions="*, 4, *">
+
+        <TabControl Grid.Column="0" Grid.Row="0">
+          <TabItem Header="Source">
+            <AvaloniaEdit:TextEditor
+                ShowLineNumbers="True"
+                          IsReadOnly="True"
+                FontFamily="Cascadia Code,Consolas,Menlo,Monospace">
+              <i:Interaction.Behaviors>
+                <behaviors:DocumentTextBindingBehavior Text="{Binding SelectedNode.Description, Mode=TwoWay}"/>
+              </i:Interaction.Behaviors>
+            </AvaloniaEdit:TextEditor> 
+          </TabItem>
+          <TabItem Header="Preview">
+            <SKCanvasControl Name="CanvasControl" />
+          </TabItem>
+        </TabControl>
+
+        <GridSplitter Grid.Column="0" Grid.Row="1" Background="Red" ResizeDirection="Rows"/>
+        
+        <DataGrid  Grid.Column="0"  Grid.Row="2" ItemsSource="{Binding Nodes}"
+          AutoGenerateColumns="True" IsReadOnly="True"
+          GridLinesVisibility="All"
+         
+          BorderBrush="Gray">
+        </DataGrid>
+
+      </Grid>
+
+
+
+
+
+
+
+
+    </Grid>
+  </SplitView>
+</UserControl>
